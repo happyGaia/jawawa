@@ -1,0 +1,303 @@
+/* line 1, ../sass/_common.sass */
+* {
+  margin: 0;
+  padding: 0;
+  text-decoration: none;
+  list-style-type: none;
+  box-sizing: border-box;
+  font-size: 1em;
+}
+
+/* line 9, ../sass/_common.sass */
+.clearfix {
+  content: ".";
+  display: block;
+  height: 0;
+  clear: both;
+  visibility: hidden;
+}
+
+/* line 16, ../sass/_common.sass */
+body {
+  background-color: #e5e3df;
+}
+
+/* line 19, ../sass/_common.sass */
+#tab {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  z-index: 1000;
+}
+/* line 24, ../sass/_common.sass */
+#tab li {
+  float: left;
+  text-align: center;
+  line-height: 3.5em;
+  background-color: #00bcd4;
+  color: #f2f2f2;
+}
+
+/* line 31, ../sass/_common.sass */
+#tab .dark {
+  background-color: #00343b;
+  color: white;
+}
+
+/* line 35, ../sass/_common.sass */
+* html .info {
+  height: 1%;
+}
+
+/* line 38, ../sass/_common.sass */
+#wrap {
+  width: 100%;
+  height: 92.2%;
+  position: absolute;
+  overflow: auto;
+}
+/* line 44, ../sass/_common.sass */
+#wrap .info {
+  width: 95%;
+  padding: 10px;
+  margin: 10px auto 0 auto;
+  background-color: #fafafa;
+  -webkit-box-shadow: rgba(85, 85, 85, 0.26) 0 2px 10px;
+  -moz-box-shadow: rgba(85, 85, 85, 0.26) 0 2px 10px;
+  box-shadow: rgba(85, 85, 85, 0.26) 0 2px 10px;
+  min-height: 60px;
+}
+/* line 51, ../sass/_common.sass */
+#wrap .info .icon {
+  width: 15%;
+  float: left;
+}
+/* line 54, ../sass/_common.sass */
+#wrap .info .infoBox {
+  width: 85%;
+  float: left;
+}
+/* line 57, ../sass/_common.sass */
+#wrap .info .infoBox .addr {
+  margin-bottom: 10px;
+  font-size: 18px;
+  line-height: 24px;
+}
+/* line 61, ../sass/_common.sass */
+#wrap .info .infoBox .infolink {
+  width: 100%;
+  border-top: 1px solid #dedede;
+}
+/* line 64, ../sass/_common.sass */
+#wrap .info .infoBox .infolink li {
+  width: 49%;
+  float: left;
+  color: #737373;
+  margin-top: 10px;
+}
+/* line 69, ../sass/_common.sass */
+#wrap .info .infoBox .infolink .info_icon {
+  float: left;
+  margin-right: 5px;
+}
+/* line 72, ../sass/_common.sass */
+#wrap .info .infoBox .infolink .info_word {
+  line-height: 30px;
+}
+/* line 74, ../sass/_common.sass */
+#wrap .info:after {
+  content: ".";
+  display: block;
+  height: 0;
+  clear: both;
+  visibility: hidden;
+}
+/* line 80, ../sass/_common.sass */
+#wrap .info:last-child {
+  margin-bottom: 4em;
+}
+
+/* line 83, ../sass/_common.sass */
+html, body, #map-canvas {
+  height: 100%;
+  margin: 0px;
+  padding: 0px;
+}
+
+/* line 88, ../sass/_common.sass */
+.single-map-canvas {
+  width: 85%;
+  float: right;
+}
+/* line 92, ../sass/_common.sass */
+.single-map-canvas .mr10 {
+  margin-right: 10px;
+}
+
+/* line 95, ../sass/_common.sass */
+.link_pointer {
+  cursor: pointer;
+}
+/* line 97, ../sass/_common.sass */
+.link_pointer:hover, .link_pointer:active {
+  background-color: #f3f3f3;
+}
+
+/* line 100, ../sass/_common.sass */
+.newActivity {
+  cursor: pointer;
+  display: block;
+  width: 95%;
+  height: 40px;
+  line-height: 40px;
+  background-color: #00bcd4;
+  color: white;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  -ms-border-radius: 2px;
+  -o-border-radius: 2px;
+  border-radius: 2px;
+  margin: 0 auto;
+  text-align: center;
+  font-size: 20px;
+  letter-spacing: 0.06px;
+}
+/* line 113, ../sass/_common.sass */
+.newActivity:hover {
+  background-color: #00343b;
+}
+
+/* line 116, ../sass/_common.sass */
+.currentAddr {
+  font-size: 20px;
+  margin: 0 auto;
+  width: 95%;
+}
+
+/* line 121, ../sass/_common.sass */
+.newActivity {
+  margin-bottom: 5px;
+  margin-top: 15px;
+}
+
+/* line 125, ../sass/_common.sass */
+.icon_r {
+  font-weight: bolder;
+  margin-right: 5px;
+}
+
+/* line 129, ../sass/_common.sass */
+.btn2 {
+  width: 50%;
+}
+
+/* line 132, ../sass/_common.sass */
+.btn3 {
+  width: 45%;
+  font-size: 16px;
+}
+
+/* line 136, ../sass/_common.sass */
+.commentBox {
+  margin-top: 15px;
+  border: 2px solid #efca86;
+  margin-bottom: 15px;
+  padding: 10px 5px;
+}
+
+/* line 142, ../sass/_common.sass */
+.w_comments {
+  border: 2px solid #00bcd4;
+  padding: 5px;
+}
+/* line 145, ../sass/_common.sass */
+.w_comments dt {
+  float: left;
+}
+/* line 147, ../sass/_common.sass */
+.w_comments dd {
+  margin-bottom: 10px;
+}
+/* line 21, ../sass/_setting.sass */
+.w_comments dd:after {
+  content: ".";
+  height: 0;
+  display: block;
+  visibility: hidden;
+  clear: both;
+}
+/* line 150, ../sass/_common.sass */
+.w_comments dd span {
+  margin-right: 6px;
+}
+/* line 152, ../sass/_common.sass */
+.w_comments input[type=radio] {
+  margin-right: 3px;
+}
+
+/* line 155, ../sass/_common.sass */
+.disappear {
+  display: none;
+}
+
+/* line 158, ../sass/_common.sass */
+.t_r {
+  text-align: right;
+}
+
+/* line 161, ../sass/_common.sass */
+.deleteIcon {
+  padding-right: 5px;
+  color: gray;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 700px) {
+  /* line 1, ../sass/_phone.sass */
+  #tab {
+    width: 100%;
+    -webkit-box-shadow: rgba(85, 85, 85, 0.26) 0 -2px 10px;
+    -moz-box-shadow: rgba(85, 85, 85, 0.26) 0 -2px 10px;
+    box-shadow: rgba(85, 85, 85, 0.26) 0 -2px 10px;
+  }
+  /* line 4, ../sass/_phone.sass */
+  #tab li {
+    width: 50%;
+  }
+  /* line 6, ../sass/_phone.sass */
+  #tab li:hover, #tab li:active {
+    background-color: #00343b;
+  }
+
+  /* line 10, ../sass/_phone.sass */
+  .icon_loc {
+    background-image: url("../img/loc_305.png");
+    z-index: 1000;
+    position: fixed;
+    bottom: 4.5em;
+    right: 10px;
+    width: 62px;
+    height: 65px;
+  }
+  /* line 18, ../sass/_phone.sass */
+  .icon_loc:hover {
+    background-image: url("../img/loc_305p.png");
+  }
+}
+@media screen and (min-width: 700px) {
+  /* line 1, ../sass/_pc.sass */
+  #tab {
+    width: 40%;
+    right: 30%;
+  }
+  /* line 4, ../sass/_pc.sass */
+  #tab li {
+    width: 50%;
+    font-size: 14px;
+  }
+
+  /* line 8, ../sass/_pc.sass */
+  .currentAddr, .newActivity, #wrap .info {
+    width: 65%;
+  }
+}

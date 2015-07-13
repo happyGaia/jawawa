@@ -1,0 +1,164 @@
+*
+	margin: 0
+	padding: 0
+	text-decoration: none
+	list-style-type: none
+	box-sizing: border-box
+	font-size: 1em
+
+.clearfix
+	content: "."
+	display: block
+	height: 0
+	clear: both
+	visibility: hidden
+
+body
+	background-color: $bgColor_body
+
+#tab
+	position: fixed
+	right: 0
+	bottom: 0
+	z-index: 1000
+	li
+		float: left
+		text-align: center
+		line-height: 3.5em
+		background-color: $bgColor_tab
+		color: darken(white, 5%)
+		
+#tab .dark
+	background-color: $bgColor_tab_darken
+	color: white
+
+* html .info 
+	height: 1%
+
+#wrap
+	width: 100%
+	height: 92.2%
+	// background-color: darken($bgColor_tab, 30%)
+	position: absolute
+	overflow: auto
+	.info
+		width: 95%
+		padding: 10px
+		margin: 10px auto 0 auto
+		background-color: #FAFAFA
+		@include box-shadow(rgba(85, 85, 85, 0.26) 0 2px 10px)
+		min-height: 60px
+		.icon
+			width: 15%
+			float: left
+		.infoBox
+			width: 85%
+			float: left
+			.addr
+				margin-bottom: 10px
+				font-size: 18px
+				line-height: 24px
+			.infolink
+				width: 100%
+				border-top: 1px solid #DEDEDE
+				li
+					width: 49%
+					float: left
+					color: #737373
+					margin-top: 10px
+				.info_icon
+					float: left
+					margin-right: 5px
+				.info_word
+					line-height: 30px
+		&:after
+			content: "."
+			display: block
+			height: 0
+			clear: both
+			visibility: hidden
+		&:last-child
+			margin-bottom: 4em
+
+html, body, #map-canvas
+	height: 100%
+	margin: 0px
+	padding: 0px
+
+.single-map-canvas
+	//border: 1px solid red
+	width: 85%
+	float: right
+	.mr10
+		margin-right: 10px
+
+.link_pointer
+	cursor: pointer
+	&:hover, &:active
+		background-color: $bgColor_link_hover
+
+.newActivity
+	cursor: pointer
+	display: block
+	width: 95%
+	height: 40px
+	line-height: 40px
+	background-color: $bgColor_tab
+	color: #fff
+	@include border-radius(2px)
+	margin: 0 auto
+	text-align: center
+	font-size: 20px
+	letter-spacing: 0.06px
+	&:hover
+		background-color: $bgColor_tab_darken
+
+.currentAddr
+	font-size: 20px
+	margin: 0 auto
+	width: 95%
+
+.newActivity
+	margin-bottom: 5px
+	margin-top: 15px
+
+.icon_r
+	font-weight: bolder
+	margin-right: 5px
+
+.btn2
+	width: 50%
+
+.btn3
+	width: 45%
+	font-size: 16px
+
+.commentBox
+	margin-top: 15px
+	border: 2px solid $bgColor_write_comment
+	margin-bottom: 15px
+	padding: 10px 5px
+
+.w_comments
+	border: 2px solid #00bcd4
+	padding: 5px
+	dt
+		float: left
+	dd
+		margin-bottom: 10px
+		+clearfix()
+		span
+			margin-right: 6px
+	input[type=radio]
+		margin-right: 3px
+
+.disappear
+	display: none
+
+.t_r
+	text-align: right
+	
+.deleteIcon
+	padding-right: 5px
+	color: gray
+	cursor: pointer

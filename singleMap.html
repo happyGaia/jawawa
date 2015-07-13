@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+	<title>single Map</title>
+	<link rel="stylesheet" type="text/css" href="css/all.css?20150522">
+	<script src="js/jquery.min.js"></script>
+	<script type="text/javascript" src="js/index.init.js"></script>
+	<script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
+	<script type="text/javascript">
+		var map = null;
+
+		function initialize(){
+			var addr = getValue("add");
+			console.log("addr:"+addr);
+
+			//map
+			var mapOptions = {
+				zoom: 16
+			};
+			map = new google.maps.Map(document.getElementById("map-canvas"),mapOptions);
+
+			//pos
+			var pos = new google.maps.LatLng(getValue("lat"),getValue("lng"));
+
+			//set info window
+			var infowindow = new google.maps.InfoWindow({
+				map: map,
+				position: pos,
+				content: getValue("add")
+			});
+
+			//set map center pos
+			map.setCenter(pos);
+		}
+
+		google.maps.event.addDomListener(window, 'load', initialize);
+	</script>
+</head>
+<body>
+    <div id="map-canvas"></div>
+	<ul id="tab" ontouchstart="return true;">
+		<li onclick="location.href='current_jawawa.html'" class="dark">全台娃娃機資訊</li>
+		<!-- <li onclick="location.href='index.html'" >即將舉行</li> -->
+		<li onclick="location.href='info_jawawa.html'">大地圖</li>
+	</ul>
+</body>
+</html>

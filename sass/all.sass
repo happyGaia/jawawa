@@ -1,0 +1,11 @@
+@import 'compass/css3'
+@import 'setting'
+@import 'common'
+
+$phone-max: 700px
+
+@media screen and (max-width: $phone-max)
+	@import 'phone'
+
+@media screen and (min-width: $phone-max)
+	@import 'pc'

@@ -1,0 +1,27 @@
+$tab_num: 3
+
+$bgColor_tab: #00BCD4
+$bgColor_tab_darken: darken($bgColor_tab, 30%)
+$bgColor_body: #E5E3DF
+$bgColor_link_hover: lighten(#737373, 50%)
+$bgColor_write_comment: darken(wheat, 10%)
+
+$icon_loc: '../img/loc_305.png'
+$icon_loc_press: '../img/loc_305p.png'
+$icon_map: '../img/icon_map.png'
+$icon_attend: '../img/icon_attend2.png'
+
+$pc_w: 100%
+$pc_tab_total_w: 40%
+$pc_tab_n: 2
+$pc_tab_right_range: ($pc_w - $pc_tab_total_w)/$pc_tab_n
+$pc_tab_single_w: 100% / $pc_tab_n
+
+@mixin clearfix
+	&:after
+		content: "."
+		height: 0
+		display: block
+		visibility: hidden
+		clear: both	
+	

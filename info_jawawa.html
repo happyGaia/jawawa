@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+	<title>Document</title>
+	<link rel="stylesheet" type="text/css" href="css/all.css">
+	<script src="js/jquery.min.js"></script>
+	<script type="text/javascript" src="js/index.init.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
+    <script>
+		var map;
+		var infowindow = null;
+		var myKey = "xxxxx";
+		var getUrl = 'http://1.1.1.1/';
+		function initialize() {
+		  	var mapOptions = {
+		    	zoom: 8,
+		  	};
+		  	map = new google.maps.Map(document.getElementById('map-canvas'),
+		      mapOptions);
+
+		  	gotoCurrentPos();
+
+		  	getAllWawaLoc();		  	
+		}
+
+		function getAllWawaLoc(){
+			$.ajax({
+			    url: getUrl+'api/locations',
+			    type: 'get',
+			    headers: {
+			        "API_KEY": myKey
+			    },
+			    dataType: 'json',
+			    success: function (data) {
+
+			    	if(data.Locations != null){
+				        console.log("data length:"+data.Locations.length);
+				        setMarkers(map, data.Locations);
+			    	}
+			    },
+			    error: function(){
+			    	displayMessage("查詢周遭 \"夾娃娃機店\"沒有成功，請重新整理取得服務。","#wrap");	
+			    }
+			});
+		}
+
+		function gotoCurrentPos(){
+			if(navigator.geolocation) {
+			    navigator.geolocation.getCurrentPosition(function(position) {
+			      map.setCenter(null); //clear before center
+
+			      if(infowindow != null){
+			      	infowindow.close();
+			      }
+
+			      console.log("x:"+position.coords.latitude+",y:"+position.coords.longitude);
+			      var pos = new google.maps.LatLng(position.coords.latitude,
+			                                       position.coords.longitude);
+
+			      infowindow = new google.maps.InfoWindow({
+			        map: map,
+			        position: pos,
+			        content: '你在這'
+			      });
+
+			      map.setCenter(pos);
+			    }, function() {
+			      handleNoGeolocation(true);
+			    });
+			  } else {
+			    // Browser doesn't support Geolocation
+			    handleNoGeolocation(false);
+			  }
+		}
+
+
+		function handleNoGeolocation(errorFlag) {
+		  	if (errorFlag) {
+		    	var content = 'Error: The Geolocation service failed.';
+		 	} else {
+		    	var content = 'Error: Your browser doesn\'t support geolocation.';
+		  	}
+
+		  	var options = {
+		    	map: map,
+		    	position: new google.maps.LatLng(60, 105),
+		    	content: content
+		  	};
+
+		  	var infowindow = new google.maps.InfoWindow(options);
+		  	map.setCenter(options.position);
+		}
+
+		function setMarkers (map, locations) {
+			for(var i=0; i< locations.length; i++){
+				var loc = locations[i];
+				var myLatLng = new google.maps.LatLng(loc.Lat,loc.Lng);
+				var marker= new google.maps.Marker({
+					position: myLatLng,
+					map: map,
+					title: loc.Address,
+				});
+			}
+		}
+
+
+
+		google.maps.event.addDomListener(window, 'load', initialize);
+    </script>
+</head>
+<body>
+	<div id="map-canvas"></div>
+	<ul id="tab" ontouchstart="return true;">
+		<li onclick="location.href='current_jawawa.html'">全台娃娃機資訊</li>
+		<li onclick="location.href='info_jawawa.html'" class="dark">大地圖</li>
+	</ul>
+	<div class="icon_loc" onclick="gotoCurrentPos();"></div>
+</body>
+</html>

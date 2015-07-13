@@ -1,0 +1,19 @@
+#tab 
+	width: 100%
+	@include box-shadow(rgba(85, 85, 85, 0.26) 0 -2px 10px)
+	li
+		width: 50%
+		&:hover, &:active
+			background-color: darken($bgColor_tab, 30%)
+			// border-top: 2px solid #FFFE94
+
+.icon_loc
+	background-image: url($icon_loc)
+	z-index: 1000
+	position: fixed
+	bottom: 4.5em
+	right: 10px
+	width: 62px
+	height: 65px
+	&:hover
+		background-image: url($icon_loc_press)
