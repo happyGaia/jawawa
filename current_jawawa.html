@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+	<title>Jawawa Info</title>
+	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+	<link rel="stylesheet" type="text/css" href="css/all.css?2015071301">
+	<script src="js/jquery.min.js"></script>
+	<script type="text/javascript" src="js/index.init.js"></script>
+	<script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
+	<script type="text/javascript">
+		var myKey = "xxxxx";
+		var getUrl = 'http://1.1.1.1/';
+		var isNeedTime = {"No":false,"Yes":true};
+
+		var param_showComment = {'className':'#comment_','switchResult':false};
+		var param_showWriteForm = {'className':'#wCommentForm_','switchResult':false};
+		var param_showWriteBtn = {'className':'#wCommentBtn_','switchResult':true};
+		
+		$().ready(function(){
+			gotoCurrentPos();
+
+		});
+
+		//get current position for query in backend
+		function gotoCurrentPos() {
+			if(navigator.geolocation){
+				navigator.geolocation.getCurrentPosition(function(position){
+					var lat = position.coords.latitude;
+					var lon = position.coords.longitude;
+					console.log("x:"+lat+",y:"+lon);
+					//去google 反查地址
+					getRealAddr(lat, lon);
+					
+				},function(){
+					displayMessage("定位服務失敗<br>請重新整理取得服務","#wrap");
+				});
+			}else{
+				displayMessage("無法取得定位<br>請重新整理取得服務","#wrap");
+			}
+		}
+
+		function getAddrComponentLongName(result, check_type){
+			var len = result.address_components.length-1; //start from 0~6, not 1~7
+			var longName = "";
+			for(var i=len; i>=0; i--){
+				type = result.address_components[i].types[0];
+				if(check_type == type){
+					longName = result.address_components[i].long_name;
+				}
+			}
+			return longName;
+		}
+
+		var fullAddr = "";
+		var fullAddr_lat = "";
+		var fullAddr_lng = "";
+		var queryKeyAddr = "";
+		function getRealAddr(x, y){
+			var geocodeer = new google.maps.Geocoder();
+			geocodeer.geocode({location:{lat:x, lng:y}},function(results, status){
+				if(status == google.maps.GeocoderStatus.OK){
+					var city = getAddrComponentLongName(results[0], "administrative_area_level_1"); //area is 3
+					// var area = getAddrComponentLongName(results[0], "administrative_area_level_3"); //area is 3		
+					// queryKeyAddr = 	city+area;
+					queryKeyAddr = city;
+
+					fullAddr = results[0].formatted_address;
+					fullAddr_lat = x.toString();
+					fullAddr_lng = y.toString();
+
+					$("#currentAddr span").text(queryKeyAddr);	
+					$("#city").val(queryKeyAddr);
+
+					if(queryKeyAddr != ""){
+						getBackData(queryKeyAddr);
+					}else{
+						displayMessage("使用 Google \"取得城市、區域\"服務(Geocoder)沒有成功，請重新整理取得服務。","#wrap");
+					}
+				}else{
+					displayMessage("使用 Google \"經緯度轉地址\"服務(Geocoder)沒有成功，請重新整理取得服務。","#wrap");
+				}
+
+			});
+		}
+
+		function changeLocation(){
+			var changeCity = $("#city").val();
+			console.log("changeCity:"+changeCity);
+
+			getBackData(changeCity);
+		}
+
+		//get db from backend
+		function getBackData(queryKeyAddr){
+			var d = getToday(isNeedTime.No);			
+			console.log("d:"+d);
+			$.ajax({
+			    url: getUrl+'api/location/'+queryKeyAddr,
+			    type: 'get',
+			    headers: {
+			        "API_KEY": myKey
+			    },
+			    dataType: 'json',
+			    success: function (data) {
+
+			    	if(data.Locations != null){
+				        console.log("data length:"+data.Locations.length);
+				        var location = "";
+				        for(var i=0; i<data.Locations.length; i++){
+				        	var loc = data.Locations[i];
+				        	var content = loclist(loc);
+				        	console.log(i+"loc.Lat:"+loc.Lat+",loc.Lng:"+loc.Lng);
+				        	location = location +content;
+				        }
+				        $("#wrap").html(location);
+			    	}
+			    },
+			    error: function(){
+			    	displayMessage("查詢周遭 \"夾娃娃機店\"沒有成功，請重新整理取得服務。","#wrap");	
+			    }
+			});
+		}
+
+		//add new activity today
+		function addNewLoc(){
+			console.log("myKey:"+myKey);
+			console.log("add city:"+queryKeyAddr);
+			var dt = getToday(isNeedTime.Yes);
+			console.log("dt:"+dt);
+			$.ajax({
+			    url: getUrl+'api/location',
+			    type: 'post',
+			    headers: {
+			        "API_KEY": myKey
+			    },
+			    dataType: 'json',
+			    data: JSON.stringify({"Address": fullAddr, "Area": queryKeyAddr ,"Lng":fullAddr_lng ,"Lat":fullAddr_lat,"Time":dt}),
+			    success: function (data) {
+			    	console.log("queryKeyAddr:"+queryKeyAddr);
+			        getBackData(queryKeyAddr);
+			    }
+			});
+		}
+
+		//get today date and time
+		function getToday(isNeedTime){
+			var today = new Date();
+			var dd = today.getDate();
+			var mm = today.getMonth()+1
+			var year = today.getFullYear();
+
+			if(isNeedTime){
+				var hour = today.getHours();
+				var min = today.getMinutes();
+				var result = year+ '-' + (mm<10?'0':'')+mm + '-' + (dd<10?'0':'')+dd+" "+(hour<10?'0':'')+hour+':'+(min<10?'0':'')+min;
+			}else{
+				var result = year+ '-' + (mm<10?'0':'')+mm + '-' + (dd<10?'0':'')+dd;
+			}
+			console.log("time result:"+result);
+			return result;
+		}
+		
+		function loclist(loc){
+			var content = "";
+			content = content + "<div id='info' class='info'><div class='icon'><img src='' alt=''>☰</div><div class='infoBox' id='infoBox"+loc.Id+"'><div class='addr'>"+loc.Address+"</div><ul class='infolink'><li onclick='showSingleMap(\""+loc.Address+"\",\""+loc.Lat+"\",\""+loc.Lng+"\");' class='link_pointer'><img src='img/icon_map.png' alt='map' class='info_icon'><span class='info_word'>地圖</span></li><li class='link_pointer' onclick='showComment(\""+loc.Id+"\")'><i class='fa fa-comment-o fa-lg icon_r'></i><span class='info_word'>評論</span></li></ul></div><div class='clearfix'></div><div class='disappear box2' id=comment_"+loc.Id+"><div class='commentBoxs'>";
+
+			if(loc.Comments != null){
+				console.log("Comments Length:"+loc.Comments.length);
+				for(var i=0; i<loc.Comments.length; i++){
+					var comment = loc.Comments[i];
+					content	= content + addNewCommentInView(comment);
+				}
+
+			}else{
+
+			}
+			
+			content = content + "</div><div class='newActivity btn2 box3' id='wCommentBtn_"+loc.Id+"' onclick='writeComment(\""+loc.Id+"\");'>寫評論</div><div class='w_comments disappear' id='wCommentForm_"+loc.Id+"'><div id='"+loc.Id+"' class='t_r' onclick='closeComment("+loc.Id+");'><i class='fa fa-times deleteIcon'></i></div><dl><dt>評價：</dt><dd><input type='radio' name='star' value='5'><span>5分</span><input type='radio' name='star' value='4'><span>4分</span><input type='radio' name='star' value='3' checked><span>3分</span><input type='radio' name='star' value='2'><span>2分</span><input type='radio' name='star' value='1'><span>1分</span></dd><dt>評論：</dt><dd><textarea id='content'></textarea></dd><div class='newActivity btn3' onclick='saveComment(\""+loc.Id+"\");'>送出評論</div></dl></div></div></div>";
+
+			return content;
+		}
+
+		function addNewCommentInView(comment){
+			var content = "<div class='commentBox' id='c_"+comment.Id+"'><div id='"+comment.Id+"' class='t_r' onclick='deleteComment(this.id);'><i class='fa fa-times deleteIcon'></i></div><div class='time'>時間："+comment.Time+"</div><div class='stars'>評價：<span>"+comment.Star+"分</span></div><div class='comment'>評論："+comment.Content+"</div></div>"
+
+			return content;
+		}
+
+		function deleteComment(commentId){
+			console.log("commentId:"+commentId);
+			$.ajax({
+			    url: getUrl+'api/comment/'+commentId,
+			    type: 'delete',
+			    headers: {
+			        "API_KEY": myKey
+			    },
+			    dataType: 'json',
+			    success: function (data){
+			    	console.log("刪除評論成功!!");
+			    	$("#c_"+commentId).addClass("disappear");
+			    },
+			    error: function(xhr, status, error){
+			    	displayMessage("刪除評論沒有成功，請再試一次。","#wrap");
+			    	console.log("error:"+error);
+			    	location.reload();	
+			    }
+			});
+		}
+
+		function showComment(locId){
+			switchDialog(param_showComment,locId);			
+		}
+		
+		function writeComment(locId){
+			switchDialog(param_showWriteForm,locId); //show write comment form dialog
+			switchDialog(param_showWriteBtn,locId);
+		}
+
+		function switchDialog(paramObject,locId){
+			if(paramObject.switchResult){
+				console.log("true");
+				$(paramObject.className+locId).addClass("disappear");
+				paramObject.switchResult = false;
+			}else{
+				console.log("false");
+				$(paramObject.className+locId).removeClass("disappear");
+				paramObject.switchResult = true; 
+			}
+		}
+
+		function closeComment(locId){
+			switchDialog(param_showWriteForm, locId);
+			switchDialog(param_showWriteBtn, locId);
+		}
+
+		function saveComment(locId){
+			closeComment(locId);
+
+			//get write comment form value
+			var s1 = $('input[name="star"]:checked').val();
+			var c1 = $("#content").val();
+			var datetime = getToday(isNeedTime.Yes);
+
+			//save comment data to backend
+			$.ajax({
+				url: getUrl+'api/comment',
+			    type: 'post',
+			    headers: {
+			        "API_KEY": myKey
+			    },
+			    dataType: 'json',
+			    data: JSON.stringify({"LocId": locId, "Star": parseInt(s1,10), "Content": c1.toString(),"Time": datetime.toString()}),
+			    success: function (data) {
+			    	
+			    	var comment = {"Id":data.Id,"Content":c1.toString(), "Star":parseInt(s1,10), "Time": datetime.toString()};
+			        var content = addNewCommentInView(comment);
+					$(".commentBoxs").append(content);
+			    },
+			    error: function(xhr, status, error){
+					console.log(error);
+			    }
+			});
+		}
+
+		function showSingleMap(addr,x,y){
+			location.href = encodeURI("singleMap.html?lat="+x+"&lng="+y+"&add="+addr);
+		}
+	</script>
+</head>
+<body>
+	<div class="currentAddr" id="currentAddr">你目前位址:		
+		<span></span>
+	</div>
+	<div class="currentAddr" id="currentAddr">改變位址:
+		<select name="" id="city" onchange="changeLocation();">
+			<option value="新北市">新北市</option>
+			<option value="台北市">台北市</option>
+			<option value="新竹縣">新竹縣</option>
+			<option value="台中市">台中市</option>
+			<option value="雲林縣">雲林縣</option>
+			<option value="台南市">台南市</option>
+			<option value="花蓮縣">花蓮縣</option>
+			<option value="高雄市">高雄市</option>
+		</select>
+	</div>
+	<div class="newActivity" onclick="addNewLoc();">
+		新增 娃娃機 地點
+	</div>
+	<div id="wrap">
+	</div>
+    <ul id="tab" ontouchstart="return true;">
+		<li onclick="location.href='current_jawawa.html'" class="dark">全台娃娃機資訊</li>
+		<li onclick="location.href='info_jawawa.html'">大地圖</li>
+	</ul>
+</body>
+</html>
