@@ -1,5 +1,5 @@
-# Jawawa
-  This is application for person that likes claw crane game to use easy way to share(save) claw crane game machine location for other person. And they can leave comments for claw crane game store. This only use in Taiwan.
+# 娃娃機地圖
+  主要方便喜歡夾娃娃的人，到夾娃娃機店後，能一鍵取得娃娃機店地址(html5 geo、google map)資訊儲存，讓其它人可以藉此應用可以看到訊息;去過店裡也可以評論/討論這家店好不好夾、爪子是不是有力等。這是Demo版本。
 
 ## Tech
   google map, html5 geo ,sass
